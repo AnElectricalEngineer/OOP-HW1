@@ -167,7 +167,7 @@ public class GeoPoint {
      *         0 <= h < 360. In compass headings, north = 0, east = 90,
      *         south = 180, and west = 270.
      **/
-  	//public double headingTo(GeoPoint gp) {
+  	public double headingTo(GeoPoint gp) {
 		 //	Implementation hints:
 		 // 1. You may find the method Math.atan2() useful when
 		 // implementing this method. More info can be found at:
@@ -179,7 +179,7 @@ public class GeoPoint {
 		 // increase in the counterclockwise direction. 
 		 
   		// TODO Implement this method
-  	//}
+  	}
 
 
   	/**
@@ -212,9 +212,10 @@ public class GeoPoint {
      * Returns a string representation of this GeoPoint.
      * @return a string representation of this GeoPoint.
      **/
-  	//public String toString() {
-  		// TODO Implement this method
-  	//}
+  	public String toString() {
+  		checkRep();
+  		return "Point - latitude: " + latitude_ + ", longitude: " + longitude_;
+  	}
 
 	/**
 	 * Checks that the representation invariant is maintained.

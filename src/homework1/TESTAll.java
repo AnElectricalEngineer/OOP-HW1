@@ -50,8 +50,19 @@ public class TESTAll
         System.out.println("Point 1 and Point 2 are equal, so their hashcode " +
                 "is equal");
 
+        GeoPoint point10 = new GeoPoint(-2100002, 1300000);
+        point9 = point10;
+        assert point9.equals(point10);
+        System.out.println("Point 9 and Point 10 are equal.");
 
-        //  TODO add tests for getHeading and toString.
+        assert point10.toString().equals("Point - latitude: -2100002, " +
+                "longitude: 1300000");
+        System.out.println("The string representation of point10 is: Point - " +
+                "latitude: -2100002, longitude: 1300000");
+
+
+
+        //  TODO add tests for getHeading.
 
     }
 }
