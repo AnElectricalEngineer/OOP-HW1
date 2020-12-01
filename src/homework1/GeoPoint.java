@@ -1,5 +1,7 @@
 package homework1;
 
+import java.lang.Math;
+
 /**
  * A GeoPoint is a point on the earth. GeoPoints are immutable.
  * <p>
@@ -64,11 +66,21 @@ public class GeoPoint {
 	// and distance computations). Because of this, you should consider 
 	// using ints for your internal representation of GeoPoint. 
 
-  	
-  	// TODO Write abstraction function and representation invariant
-  	
-  	
-  	/**
+	private final int latitude_;	// N/S latitude in millionths of degrees
+	private final int longitude_;	// E/W longitude in millionths of degrees
+
+	//	Abstraction Function:
+	//	A GeoPoint is a point on the face of the Earth represented by (p
+	//	.latitude_, p.longitude_) where p.latitude_ is the latitude of the
+	//	point in millionths of degrees, and p.longitude_ is the longitude in
+	//	millionths of degrees.
+
+	//	Representation Invariant:
+	//	For every GeoPoint p, MIN_LATITUDE <= p.latitude_ <=
+	//	MAX_LATITUDE and MIN_LONGITUDE <= p.longitude_ <= MAX_LONGITUDE.
+
+
+	/**
   	 * Constructs GeoPoint from a latitude and longitude.
      * @requires the point given by (latitude, longitude) in millionths
    	 *           of a degree is valid such that:
@@ -79,6 +91,11 @@ public class GeoPoint {
    	 **/
   	public GeoPoint(int latitude, int longitude) {
   		// TODO Implement this constructor
+		// TODO Check if need to check whether a check on lat/long is needed
+		//  - Assert?
+		this.latitude_ = latitude;
+		this.longitude_ = longitude;
+		checkRep();
   	}
 
   	 
@@ -87,7 +104,8 @@ public class GeoPoint {
      * @return the latitude of this in millionths of degrees.
      */
   	public int getLatitude() {
-  		// TODO Implement this method
+  		checkRep();
+		return latitude_;
   	}
 
 
@@ -96,7 +114,8 @@ public class GeoPoint {
      * @return the latitude of this in millionths of degrees.
      */
   	public int getLongitude() {
-  		// TODO Implement this method
+  		checkRep();
+		return longitude_;
   	}
 
 
@@ -108,6 +127,23 @@ public class GeoPoint {
      **/
   	public double distanceTo(GeoPoint gp) {
   		// TODO Implement this method
+		//	TODO Check if need to check if gp is valid as far as min/max
+		//	 lat/long
+		checkRep();
+
+		//	The location of this and gp on the face of the Earth in units of
+		// 	km instead of degrees.
+		double y1 = (double)latitude_ * KM_PER_DEGREE_LATITUDE;
+		double x1 = (double)longitude_ * KM_PER_DEGREE_LONGITUDE;
+		double y2 = (double)gp.latitude_ * KM_PER_DEGREE_LATITUDE;
+		double x2 = (double)gp.longitude_ * KM_PER_DEGREE_LONGITUDE;
+
+		double deltaY = y2 - y1;
+		double deltaX = x2 - x1;
+
+		checkRep();
+
+		return Math.sqrt(Math.pow(deltaY, 2) + Math.pow(deltaX, 2));
   	}
 
 
@@ -121,7 +157,7 @@ public class GeoPoint {
      **/
   	public double headingTo(GeoPoint gp) {
 		 //	Implementation hints:
-		 // 1. You may find the mehtod Math.atan2() useful when
+		 // 1. You may find the method Math.atan2() useful when
 		 // implementing this method. More info can be found at:
 		 // http://docs.oracle.com/javase/8/docs/api/java/lang/Math.html
 		 //
@@ -140,7 +176,14 @@ public class GeoPoint {
      * 		   gp.latitude = this.latitude && gp.longitude = this.longitude
      **/
   	public boolean equals(Object gp) {
-  		// TODO Implement this method
+		checkRep();
+		if((gp != null) && !(gp instanceof GeoPoint))
+		{
+			return false;
+		}
+		GeoPoint point = (GeoPoint)gp;
+		checkRep();
+		return point.latitude_ == latitude_ && point.longitude_ == longitude_;
   	}
 
 
@@ -164,4 +207,17 @@ public class GeoPoint {
   		// TODO Implement this method
   	}
 
+	/**
+	 * Checks that the representation invariant is maintained.
+	 * @effects Checks that the representation invariant is maintained.
+	 * Aborts the program if rep invariant is broken.
+	 */
+	private void checkRep()
+	{
+		assert latitude_ >= MIN_LATITUDE && latitude_ <= MAX_LATITUDE :
+				"Invalid latitude value";
+		assert longitude_ >= MIN_LONGITUDE && longitude_ <= MAX_LONGITUDE :
+				"Invalid longitude value";
+	}
 }
+
