@@ -56,7 +56,12 @@ public class GeoPoint {
      */
   	public static final double KM_PER_DEGREE_LONGITUDE = 93.681;
 
-  	public static final double CONVERT_FACTOR = 1000000.0;
+	/**
+	 * Conversion factor for converting millionths of a degree into 1 degree.
+	 * Divide x [millionths of a degree] by CONVERT_FACTOR to get
+	 * x [degrees].
+	 */
+	public static final double CONVERT_FACTOR = 1000000.0;
   	
 	// Implementation hint:
 	// Doubles and floating point math can cause some problems. The exact
@@ -92,9 +97,6 @@ public class GeoPoint {
      *          given in millionths of degrees.
    	 **/
   	public GeoPoint(int latitude, int longitude) {
-  		// TODO Implement this constructor
-		// TODO Check if need to check whether a check on lat/long is needed
-		//  - Assert?
 		this.latitude_ = latitude;
 		this.longitude_ = longitude;
 		checkRep();
@@ -128,7 +130,6 @@ public class GeoPoint {
      *         the Technion approximation in km.
      **/
   	public double distanceTo(GeoPoint gp) {
-  		// TODO Implement this method
 		//	TODO Check if need to check if gp is valid as far as min/max
 		//	 lat/long
 		checkRep();
@@ -166,7 +167,7 @@ public class GeoPoint {
      *         0 <= h < 360. In compass headings, north = 0, east = 90,
      *         south = 180, and west = 270.
      **/
-  	public double headingTo(GeoPoint gp) {
+  	//public double headingTo(GeoPoint gp) {
 		 //	Implementation hints:
 		 // 1. You may find the method Math.atan2() useful when
 		 // implementing this method. More info can be found at:
@@ -178,7 +179,7 @@ public class GeoPoint {
 		 // increase in the counterclockwise direction. 
 		 
   		// TODO Implement this method
-  	}
+  	//}
 
 
   	/**
@@ -203,10 +204,7 @@ public class GeoPoint {
      * @return a hash code value for this GeoPoint.
    	 **/
   	public int hashCode() {
-    	// This implementation will work, but you may want to modify it
-    	// for improved performance.
-
-    	return 1;
+    	return latitude_+longitude_;
   	}
 
 
@@ -214,9 +212,9 @@ public class GeoPoint {
      * Returns a string representation of this GeoPoint.
      * @return a string representation of this GeoPoint.
      **/
-  	public String toString() {
+  	//public String toString() {
   		// TODO Implement this method
-  	}
+  	//}
 
 	/**
 	 * Checks that the representation invariant is maintained.
