@@ -55,6 +55,8 @@ public class GeoPoint {
      * "flat earth" simplification.
      */
   	public static final double KM_PER_DEGREE_LONGITUDE = 93.681;
+
+  	public static final double CONVERT_FACTOR = 1000000.0;
   	
 	// Implementation hint:
 	// Doubles and floating point math can cause some problems. The exact
@@ -123,7 +125,7 @@ public class GeoPoint {
      * Computes the distance between GeoPoints.
      * @requires gp != null
      * @return the distance from this to gp, using the flat-surface, near
-     *         the Technion approximation.
+     *         the Technion approximation in km.
      **/
   	public double distanceTo(GeoPoint gp) {
   		// TODO Implement this method
@@ -131,12 +133,21 @@ public class GeoPoint {
 		//	 lat/long
 		checkRep();
 
-		//	The location of this and gp on the face of the Earth in units of
-		// 	km instead of degrees.
-		double y1 = (double)latitude_ * KM_PER_DEGREE_LATITUDE;
-		double x1 = (double)longitude_ * KM_PER_DEGREE_LONGITUDE;
-		double y2 = (double)gp.latitude_ * KM_PER_DEGREE_LATITUDE;
-		double x2 = (double)gp.longitude_ * KM_PER_DEGREE_LONGITUDE;
+		//	The location (x and y coordinates) of this and gp on the face of
+		//	the Earth in units of km instead of degrees. Millionths of
+		//	degrees are converted to degrees
+		double y1 =
+				((double) latitude_ / CONVERT_FACTOR) *
+						KM_PER_DEGREE_LATITUDE;
+		double x1 =
+				((double) longitude_ / CONVERT_FACTOR) *
+						KM_PER_DEGREE_LONGITUDE;
+		double y2 =
+				((double) gp.latitude_ / CONVERT_FACTOR) *
+						KM_PER_DEGREE_LATITUDE;
+		double x2 =
+				((double) gp.longitude_ / CONVERT_FACTOR) *
+						KM_PER_DEGREE_LONGITUDE;
 
 		double deltaY = y2 - y1;
 		double deltaX = x2 - x1;
