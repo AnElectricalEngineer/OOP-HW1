@@ -243,6 +243,7 @@ public class GeoPoint
      **/
     public int hashCode()
     {
+        checkRep();
         return latitude_ + longitude_;
     }
 

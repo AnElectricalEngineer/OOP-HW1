@@ -5,6 +5,7 @@ public class TESTAll
     public static void main(String[] args)
     {
         testGeoPoint();
+        testGeoSegment();
     }
 
     private static void testGeoPoint()
@@ -81,5 +82,61 @@ public class TESTAll
         double heading16to15 = point16.headingTo(point15);
         assert point16.headingTo(point15) >= 194.03 && point16.headingTo(point15) <= 194.04;
         System.out.println("The heading from point 16 to point 15 is: " + heading16to15);
+    }
+
+    private static void testGeoSegment()
+    {
+        GeoPoint point1 = new GeoPoint(4500000, 25000);
+        GeoPoint point2 = new GeoPoint(-25000, 25000);
+        GeoPoint point3 = new GeoPoint(4500000, 4500000);
+        GeoPoint point4 = new GeoPoint(-4500000, -4500000);
+
+        GeoSegment seg1 = new GeoSegment("Seg1", point1, point2);
+        GeoSegment seg2 = new GeoSegment("Seg2", point3, point4);
+
+        //  Uncomment to test - program should fail
+        //GeoSegment seg3 = new GeoSegment(null, point1, point2);
+        //GeoSegment seg4 = new GeoSegment("seg4", null, point2);
+        //GeoSegment seg5 = new GeoSegment("seg5", point1, null);
+
+        assert seg1.getP1().equals(point1) && seg1.getP2().equals(point2);
+        assert seg2.getP1().equals(point3) && seg2.getP2().equals(point4);
+        assert !seg1.getP2().equals(seg2.getP1());
+        System.out.println("getP1() and getP2() works");
+
+        assert seg1.getName().equals("Seg1");
+        assert seg2.getName().equals("Seg2");
+        assert !seg2.getName().equals("ajgikgijklajgkal;");
+        System.out.println("getName() works");
+
+        GeoSegment seg6 = seg1.reverse();
+        assert seg6.getName().equals(seg1.getName()) && seg6.getP1().equals(seg1.getP2())
+                && seg6.getP2().equals(seg1.getP1());
+        System.out.println("reverse() works");
+
+        GeoPoint point5 = new GeoPoint(0, 45000000);
+        GeoPoint point6 = new GeoPoint(45000000, 0);
+        GeoSegment seg7 = new GeoSegment("Seg7", point5, point6);
+        assert seg7.getLength() >= 6532.7 && seg7.getLength() <= 6532.8;
+        System.out.println("getLength() works");
+
+        GeoPoint point7 = new GeoPoint(-1, -2);
+        GeoPoint point8 = new GeoPoint(3, -1);
+        GeoSegment seg8 = new GeoSegment("Seg8", point7, point8);
+        assert seg8.getHeading() >= 14.02 && seg8.getHeading() <= 14.04;
+        System.out.println("getHeading() works");
+
+        GeoSegment seg1Copy = new GeoSegment("Seg1", point1, point2);
+        assert seg1Copy.equals(seg1);
+        assert !seg1.equals(seg2);
+        System.out.println("equals() works");
+
+        assert seg7.hashCode() == 6532;
+        System.out.println("hashCode() works");
+
+        assert seg7.toString().equals("Name: Seg7, Start Point: Point - " +
+                "latitude: 0, longitude: 45000000, End Point: Point - latitude: " +
+                "45000000, longitude: 0");
+        System.out.println("toString() works");
     }
 }
