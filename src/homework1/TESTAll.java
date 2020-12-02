@@ -139,4 +139,9 @@ public class TESTAll
                 "45000000, longitude: 0");
         System.out.println("toString() works");
     }
+
+    private static void testGeoFeature()
+    {
+        //TODO implement tests including test for checkRep()!
+    }
 }
