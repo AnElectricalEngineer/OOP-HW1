@@ -60,9 +60,26 @@ public class TESTAll
         System.out.println("The string representation of point10 is: Point - " +
                 "latitude: -2100002, longitude: 1300000");
 
+        GeoPoint point11 = new GeoPoint(45000000, 45000000);
+        GeoPoint point12 = new GeoPoint(45000000, -45000000);
+        double heading11to12 = point11.headingTo(point12);
+        assert point11.headingTo(point12) >= 269.0 && point11.headingTo(point12) <= 271.0;
+        System.out.println("The heading from point 11 to point 12 is: " + heading11to12);
 
+        GeoPoint point13 = new GeoPoint(45000000, 45000000);
+        GeoPoint point14 = new GeoPoint(0, 0);
+        double heading13to14 = point13.headingTo(point14);
+        assert point13.headingTo(point14) >= 224.0 && point13.headingTo(point14) <= 226.0;
+        System.out.println("The heading from point 13 to point 14 is: " + heading13to14);
 
-        //  TODO add tests for getHeading.
+        GeoPoint point15 = new GeoPoint(-1, -2);
+        GeoPoint point16 = new GeoPoint(3, -1);
+        double heading15to16 = point15.headingTo(point16);
+        assert point15.headingTo(point16) >= 14.02 && point15.headingTo(point16) <= 14.04;
+        System.out.println("The heading from point 15 to point 16 is: " + heading15to16);
 
+        double heading16to15 = point16.headingTo(point15);
+        assert point16.headingTo(point15) >= 194.03 && point16.headingTo(point15) <= 194.04;
+        System.out.println("The heading from point 16 to point 15 is: " + heading16to15);
     }
 }
