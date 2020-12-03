@@ -224,7 +224,7 @@ public class GeoPoint
     public boolean equals(Object gp)
     {
         checkRep();
-        if ((gp != null) && !(gp instanceof GeoPoint))
+        if ((gp == null) || !(gp instanceof GeoPoint))
         {
             return false;
         }

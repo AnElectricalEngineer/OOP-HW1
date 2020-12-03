@@ -1,11 +1,14 @@
 package homework1;
 
+import java.util.Iterator;
+
 public class TESTAll
 {
     public static void main(String[] args)
     {
-        testGeoPoint();
-        testGeoSegment();
+        //testGeoPoint();
+        //testGeoSegment();
+        testGeoFeature();
     }
 
     private static void testGeoPoint()
@@ -60,6 +63,8 @@ public class TESTAll
         point9 = point10;
         assert point9.equals(point10);
         System.out.println("Point 9 and Point 10 are equal.");
+        assert !point9.equals(null);
+
 
         assert point10.toString().equals("Point - latitude: -2100002, " +
                 "longitude: 1300000");
@@ -140,6 +145,7 @@ public class TESTAll
         GeoSegment seg1Copy = new GeoSegment("Seg1", point1, point2);
         assert seg1Copy.equals(seg1);
         assert !seg1.equals(seg2);
+        assert !seg1.equals(null);
         System.out.println("equals() works");
 
         assert seg7.hashCode() == 6532;
@@ -153,6 +159,77 @@ public class TESTAll
 
     private static void testGeoFeature()
     {
-        //TODO implement tests including test for checkRep()!
+        GeoPoint point11 = new GeoPoint(45000000, 45000000);
+        GeoPoint point12 = new GeoPoint(45000000, -45000000);
+        GeoSegment seg1 = new GeoSegment("Seg1", point11, point12);
+
+        GeoPoint point13 = new GeoPoint(45000000, -45000000);
+        GeoPoint point14 = new GeoPoint(0, 0);
+        GeoSegment seg2 = new GeoSegment("Seg1", point13, point14);
+
+        GeoFeature feature1 = new GeoFeature(seg1);
+        String nameFeature1 = feature1.getName();
+        assert nameFeature1.equals(seg1.getName());
+        System.out.println("The name of Feature 1 is: " + nameFeature1);
+
+        assert feature1.getStart().equals(point11);
+        assert feature1.getEnd().equals(point12);
+        System.out.println("Feature 1 begins at: " + feature1.getStart());
+        System.out.println("Feature 1 ends at: " + feature1.getEnd());
+
+        assert feature1.getStartHeading() == seg1.getHeading();
+        assert feature1.getEndHeading() == seg1.getHeading();
+        System.out.println("Feature 1's beginning heading is: " + feature1.getStartHeading());
+        System.out.println("Feature 1's ending heading is: " + feature1.getEndHeading());
+
+        assert feature1.getLength() == seg1.getLength();
+        System.out.println("Feature 1's length is: " + feature1.getLength());
+
+        GeoFeature feature2 = feature1.addSegment(seg2);
+        String nameFeature2 = feature2.getName();
+        assert nameFeature2.equals(seg1.getName());
+        assert nameFeature2.equals(seg2.getName());
+        System.out.println("The name of Feature 2 is: " + nameFeature2);
+
+        assert feature2.getStart().equals(point11);
+        assert !feature2.getStart().equals(point12);
+        assert feature2.getEnd().equals(point14);
+        assert !feature2.getEnd().equals(point13);
+        System.out.println("Feature 2 begins at: " + feature2.getStart());
+        System.out.println("Feature 2 ends at: " + feature2.getEnd());
+
+        assert feature2.getStartHeading() == seg1.getHeading();
+        assert feature2.getEndHeading() == seg2.getHeading();
+        System.out.println("Feature 2's beginning heading is: " + feature2.getStartHeading());
+        System.out.println("Feature 2's ending heading is: " + feature2.getEndHeading());
+
+        assert feature2.getLength() == seg1.getLength() + seg2.getLength();
+        System.out.println("Feature 2's length is: " + feature2.getLength());
+
+        Iterator<GeoSegment> it = feature2.getGeoSegments();
+        while(it.hasNext())
+        {
+            System.out.println(it.next().toString());
+        }
+
+        assert feature2.toString().equals("GeoFeature - Name: Seg1");
+        assert !feature2.toString().equals("GeoFeature - Name: Seg2");
+
+        assert feature2.hashCode() == (int)(seg1.getLength() + seg2.getLength());
+
+        GeoPoint point15 = new GeoPoint(45000000, 45000000);
+        GeoPoint point16 = new GeoPoint(45000000, -45000000);
+        GeoSegment seg3 = new GeoSegment("Seg1", point15, point16);
+
+        GeoPoint point17 = new GeoPoint(45000000, -45000000);
+        GeoPoint point18 = new GeoPoint(0, 0);
+        GeoSegment seg4 = new GeoSegment("Seg1", point17, point18);
+
+        GeoFeature feature3 = new GeoFeature(seg3);
+        GeoFeature feature4 = feature3.addSegment(seg4);
+
+        assert feature2.equals(feature4);
+        assert feature1.equals(feature3);
+        assert !feature1.equals(feature2);
     }
 }

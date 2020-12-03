@@ -62,10 +62,6 @@ public class GeoFeature {
     //	in a GeoFeature f,	it must hold that s.name_ == f.name_.
 
     private final String name_;
-    private final GeoPoint startPoint_;
-    private final GeoPoint endPoint_;
-    private final double startHeading_;
-    private final double endHeading_;
     private final List<GeoSegment> segments_;   // List containing GeoSegments
 
     /**
@@ -80,10 +76,6 @@ public class GeoFeature {
      **/
     public GeoFeature(GeoSegment gs) {
         this.name_ = gs.getName();
-        this.startHeading_ = gs.getHeading();
-        this.endHeading_ = gs.getHeading();
-        this.startPoint_ = gs.getP1();
-        this.endPoint_ = gs.getP2();
         segments_ = new LinkedList<>();
         segments_.add(gs);
         checkRep();
@@ -106,7 +98,7 @@ public class GeoFeature {
      */
     public GeoPoint getStart() {
         checkRep();
-        return startPoint_;
+        return segments_.get(0).getP1();
     }
 
 
@@ -116,7 +108,7 @@ public class GeoFeature {
      */
     public GeoPoint getEnd() {
         checkRep();
-        return endPoint_;
+        return segments_.get(segments_.size() - 1).getP2();
     }
 
 
@@ -127,7 +119,7 @@ public class GeoFeature {
      */
     public double getStartHeading() {
         checkRep();
-        return startHeading_;
+        return segments_.get(0).getHeading();
     }
 
 
@@ -138,7 +130,7 @@ public class GeoFeature {
      */
     public double getEndHeading() {
         checkRep();
-        return endHeading_;
+        return segments_.get(segments_.size() - 1).getHeading();
     }
 
 
@@ -170,11 +162,18 @@ public class GeoFeature {
      *         r.endHeading = gs.heading &&
      *    	   r.length = this.length + gs.length
      **/
-    /*public GeoFeature addSegment(GeoSegment gs) {
+    public GeoFeature addSegment(GeoSegment gs) {
         // TODO Implement this method
         checkRep();
+
+        //  Create a new GeoFeature from existing GeoFeature
+        GeoFeature feature = new GeoFeature(this);
+
+        //  Add the new GeoSegment
+        feature.segments_.add(gs);
         checkRep();
-    }*/
+        return feature;
+    }
 
 
     /**
@@ -195,11 +194,18 @@ public class GeoFeature {
      * where <code>a[n]</code> denotes the nth element of the Iterator.
      * @see homework1.GeoSegment
      */
-    /*public Iterator<GeoSegment> getGeoSegments() {
-        // TODO Implement this method
+    public Iterator<GeoSegment> getGeoSegments() {
         checkRep();
+
+        //  Create a COPY of the list of segments comprising the GeoFeature
+        List <GeoSegment> segmentsCopy = new LinkedList<>();
+        for(int i = 0; i < segments_.size(); i++)
+        {
+            segmentsCopy.add(i, segments_.get(i));
+        }
         checkRep();
-    }*/
+        return segmentsCopy.iterator();
+    }
 
 
     /**
@@ -208,36 +214,54 @@ public class GeoFeature {
      *         (o.geoSegments and this.geoSegments contain
      *          the same elements in the same order).
      **/
-    /*public boolean equals(Object o) {
-        // TODO Implement this method
+    public boolean equals(Object o) {
         checkRep();
+        if ((o == null) || !(o instanceof GeoFeature))
+        {
+            return false;
+        }
+        GeoFeature feature = (GeoFeature) o;
+
+        /*  If number of segments in each feature is different, features
+          cannot be equal.*/
+        if(feature.segments_.size() != segments_.size())
+        {
+            return false;
+        }
+
+        //  Check whether the i'th segment in each feature is equal.
+        for(int i = 0; i<feature.segments_.size(); i++)
+        {
+            if(!feature.segments_.get(i).equals(segments_.get(i)))
+            {
+                return false;
+            }
+        }
         checkRep();
-    }*/
+        return true;
+    }
 
 
     /**
      * Returns a hash code for this.
      * @return a hash code for this.
      **/
-    /*public int hashCode() {
+    public int hashCode() {
         // This implementation will work, but you may want to modify it
         // improved performance.
-        // TODO Improve this method
         checkRep();
-        checkRep();
-        return 1;
-    }*/
+        return (int)getLength();
+    }
 
 
     /**
      * Returns a string representation of this.
      * @return a string representation of this.
      **/
-    /*public String toString() {
-        // TODO Implement this method
+    public String toString() {
         checkRep();
-        checkRep();
-    }*/
+        return "GeoFeature - Name: " + name_;
+    }
 
     /**
      * Checks that the representation invariant is maintained.
@@ -245,8 +269,10 @@ public class GeoFeature {
     private void checkRep()
     {
         assert name_ != null;
-        assert startHeading_ >= 0 && startHeading_ < 360;
-        assert endHeading_ >= 0 && endHeading_ < 360;
+        assert segments_.get(0).getHeading() >= 0 &&
+                segments_.get(0).getHeading() < 360;
+        assert segments_.get(segments_.size() - 1).getHeading() >= 0 &&
+                segments_.get(segments_.size() - 1).getHeading() < 360;
 
         //  If size of list is 1, no need to check that linking points match.
         if(segments_.size() == 1)
@@ -254,17 +280,32 @@ public class GeoFeature {
             assert segments_.get(0).getName().equals(name_);
         }
 
-        //  In the general case, check that each segment's name matches the
-        //  feature name, and that the endpoints of each connected segment match
+        /*  In the general case, check that each segment's name matches the
+          feature name, and that the endpoints of each connected segment match*/
         else
         {
             for( int i = 0; i < segments_.size() - 1; i++)
             {
                 assert segments_.get(i).getName().equals(name_);
-                assert segments_.get(i).getP2().equals(segments_.get(i+1).getP1());
+                assert segments_.get(i).getP2().
+                        equals(segments_.get(i + 1).getP1());
             }
-            assert segments_.get(segments_.size()-1).getName().equals(name_);
+            assert segments_.get(segments_.size() - 1).getName().equals(name_);
         }
+    }
+
+    private GeoFeature(GeoFeature gf)
+    {
+        this.name_ = gf.getName();
+        segments_ = new LinkedList<>();
+        Iterator<GeoSegment> segments = gf.getGeoSegments();
+
+        //  Copy segments from gf.segments_ to new list
+        while(segments.hasNext())
+        {
+            segments_.add(segments.next());
+        }
+        checkRep();
     }
 
 }

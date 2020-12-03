@@ -143,7 +143,7 @@ public class GeoSegment  {
      **/
     public boolean equals(Object gs) {
         checkRep();
-        if ((gs != null) && !(gs instanceof GeoSegment))
+        if ((gs == null) || !(gs instanceof GeoSegment))
         {
             return false;
         }
