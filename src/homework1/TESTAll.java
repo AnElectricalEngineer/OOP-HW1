@@ -6,8 +6,8 @@ public class TESTAll
 {
     public static void main(String[] args)
     {
-        //testGeoPoint();
-        //testGeoSegment();
+        testGeoPoint();
+        testGeoSegment();
         testGeoFeature();
     }
 
