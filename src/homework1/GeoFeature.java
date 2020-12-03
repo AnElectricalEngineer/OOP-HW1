@@ -170,11 +170,11 @@ public class GeoFeature {
      *         r.endHeading = gs.heading &&
      *    	   r.length = this.length + gs.length
      **/
-    public GeoFeature addSegment(GeoSegment gs) {
+    /*public GeoFeature addSegment(GeoSegment gs) {
         // TODO Implement this method
         checkRep();
         checkRep();
-    }
+    }*/
 
 
     /**
@@ -195,11 +195,11 @@ public class GeoFeature {
      * where <code>a[n]</code> denotes the nth element of the Iterator.
      * @see homework1.GeoSegment
      */
-    public Iterator<GeoSegment> getGeoSegments() {
+    /*public Iterator<GeoSegment> getGeoSegments() {
         // TODO Implement this method
         checkRep();
         checkRep();
-    }
+    }*/
 
 
     /**
@@ -208,36 +208,36 @@ public class GeoFeature {
      *         (o.geoSegments and this.geoSegments contain
      *          the same elements in the same order).
      **/
-    public boolean equals(Object o) {
+    /*public boolean equals(Object o) {
         // TODO Implement this method
         checkRep();
         checkRep();
-    }
+    }*/
 
 
     /**
      * Returns a hash code for this.
      * @return a hash code for this.
      **/
-    public int hashCode() {
+    /*public int hashCode() {
         // This implementation will work, but you may want to modify it
         // improved performance.
         // TODO Improve this method
         checkRep();
         checkRep();
         return 1;
-    }
+    }*/
 
 
     /**
      * Returns a string representation of this.
      * @return a string representation of this.
      **/
-    public String toString() {
+    /*public String toString() {
         // TODO Implement this method
         checkRep();
         checkRep();
-    }
+    }*/
 
     /**
      * Checks that the representation invariant is maintained.

@@ -23,6 +23,11 @@ public class TESTAll
         assert point1.equals(point2);
         System.out.println("Point one and Point two are equal? " + point1.equals(point2));
 
+        assert point1.distanceTo(point2) >= 0.0 && point1.distanceTo(point2) <= 0.1;
+        System.out.println("The distance between point 1 and point 2 is: " + point1.distanceTo(point2));
+        assert point2.distanceTo(point1) >= 0.0 && point2.distanceTo(point1) <= 0.1;
+        System.out.println("The distance between point 2 and point 1 is: " + point2.distanceTo(point1));
+
         GeoPoint point3 = new GeoPoint(1000000, 2000000);
         assert !point1.equals(point3);
         System.out.println("Point one and Point three are equal? " + point1.equals(point3));
@@ -64,23 +69,23 @@ public class TESTAll
         GeoPoint point11 = new GeoPoint(45000000, 45000000);
         GeoPoint point12 = new GeoPoint(45000000, -45000000);
         double heading11to12 = point11.headingTo(point12);
-        assert point11.headingTo(point12) >= 269.0 && point11.headingTo(point12) <= 271.0;
+        assert heading11to12 >= 269.0 && heading11to12 <= 271.0;
         System.out.println("The heading from point 11 to point 12 is: " + heading11to12);
 
         GeoPoint point13 = new GeoPoint(45000000, 45000000);
         GeoPoint point14 = new GeoPoint(0, 0);
         double heading13to14 = point13.headingTo(point14);
-        assert point13.headingTo(point14) >= 224.0 && point13.headingTo(point14) <= 226.0;
+        assert heading13to14 >= 224.0 && heading13to14 <= 226.0;
         System.out.println("The heading from point 13 to point 14 is: " + heading13to14);
 
         GeoPoint point15 = new GeoPoint(-1, -2);
         GeoPoint point16 = new GeoPoint(3, -1);
         double heading15to16 = point15.headingTo(point16);
-        assert point15.headingTo(point16) >= 14.02 && point15.headingTo(point16) <= 14.04;
+        assert heading15to16 >= 14.02 && heading15to16 <= 14.04;
         System.out.println("The heading from point 15 to point 16 is: " + heading15to16);
 
         double heading16to15 = point16.headingTo(point15);
-        assert point16.headingTo(point15) >= 194.03 && point16.headingTo(point15) <= 194.04;
+        assert heading16to15 >= 194.03 && heading16to15 <= 194.04;
         System.out.println("The heading from point 16 to point 15 is: " + heading16to15);
     }
 
@@ -124,6 +129,12 @@ public class TESTAll
         GeoPoint point8 = new GeoPoint(3, -1);
         GeoSegment seg8 = new GeoSegment("Seg8", point7, point8);
         assert seg8.getHeading() >= 14.02 && seg8.getHeading() <= 14.04;
+
+        GeoPoint point9 = new GeoPoint(1, -2);
+        GeoSegment seg9 = new GeoSegment("Seg9", point7, point9);
+        assert seg9.getHeading() >= 0.0 && seg9.getHeading() <= 0.1;
+        GeoSegment seg10 = new GeoSegment("Seg10", point9, point7);
+        assert seg10.getHeading() >= 179.9 && seg9.getHeading() <= 181.1;
         System.out.println("getHeading() works");
 
         GeoSegment seg1Copy = new GeoSegment("Seg1", point1, point2);

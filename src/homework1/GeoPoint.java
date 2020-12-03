@@ -147,8 +147,6 @@ public class GeoPoint
      **/
     public double distanceTo(GeoPoint gp)
     {
-        //	TODO Check if need to check if gp is valid as far as min/max
-        //	 lat/long
         checkRep();
 
         //	The location (x and y coordinates) of this and gp on the face of
