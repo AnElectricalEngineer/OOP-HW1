@@ -70,20 +70,20 @@ public class Route {
 
     /**
      * Constructs a new Route r from an existing Route prevRoute.
-     * @requires prevRoute != null
+     * @requires prevRoute != null, gs != null
      * @effects Constructs a new Route r such that
      *          r.startHeading = prevRoute.startHeading &&
-     *          r.endHeading = prevRoute.endHeading &&
+     *          r.endHeading = gs.endHeading &&
      *          r.start = prevRoute.start &&
-     *          r.end = prevRoute.end
+     *          r.end = gs.end
      **/
     private Route(Route prevRoute, GeoSegment gs)
     {
-        //  TODO fix spec
         features_ = new LinkedList<>();
 
-        //  Copy all features except last from prevRoute.features_ to
-        //  new list
+        /*  Copy all features except last from prevRoute.features_ to
+          new list
+          */
         for(int i = 0; i < prevRoute.features_.size() - 1; i++)
         {
             features_.add(prevRoute.features_.get(i));
@@ -94,14 +94,20 @@ public class Route {
           feature. Otherwise, create a new feature with gs as the first
           segment, and append to the end of the route.
           */
-        if(gs.getName().equals(prevRoute.features_.get(prevRoute.features_.size() - 1).getName()))
+        if(gs.getName().equals(prevRoute.features_.get(prevRoute.
+                features_.size() - 1).getName()))
         {
             GeoFeature lastFeature =
-                    prevRoute.features_.get(prevRoute.features_.size() - 1).addSegment(gs);
+                    prevRoute.features_.get(prevRoute.features_.size() - 1).
+                            addSegment(gs);
             features_.add(lastFeature);
         }
         else
         {
+            //  Insert last feature from prevRoute into new route
+            features_.add(prevRoute.features_.get(prevRoute.features_.size() - 1));
+
+            //  Create new feature and insert into new route
             GeoFeature newFeature = new GeoFeature(gs);
             features_.add(newFeature);
         }
@@ -179,7 +185,6 @@ public class Route {
      *         r.length = this.length + gs.length
      **/
     public Route addSegment(GeoSegment gs) {
-        //TODO fix spec
         checkRep();
         Route route = new Route(this, gs);
         checkRep();

@@ -246,31 +246,20 @@ public class TESTAll
         GeoPoint point14 = new GeoPoint(0, 0);
         GeoSegment seg2 = new GeoSegment("Seg1", point13, point14);
 
-        GeoFeature feature1 = new GeoFeature(seg1);
-        feature1 = feature1.addSegment(seg2);
-        System.out.println(feature1.getLength());
-
         route1 = route1.addSegment(seg2);
         assert route1.getLength() == seg1.getLength() + seg2.getLength();
-        assert route1.hashCode() == seg1.getLength() + seg2.getLength();
+        assert route1.hashCode() == (int)(seg1.getLength() + seg2.getLength());
 
-        GeoPoint point21 = new GeoPoint(45, 45);
-        GeoPoint point22 = new GeoPoint(45, -45);
-        GeoSegment seg11 = new GeoSegment("Seg11", point11, point12);
-
-        //  Uncomment to test - program should fail
-        route1.addSegment(seg11);
-
-        /*GeoPoint point15 = new GeoPoint(45000000, 45000000);
-        GeoPoint point16 = new GeoPoint(45000000, -45000000);
-        GeoSegment seg3 = new GeoSegment("Seg1", point15, point16);
+        GeoPoint point15 = new GeoPoint(0, 0);
+        GeoPoint point16 = new GeoPoint(35000000, 25000000);
+        GeoSegment seg3 = new GeoSegment("Seg2", point15, point16);
 
         GeoPoint point17 = new GeoPoint(45000000, -45000000);
         GeoPoint point18 = new GeoPoint(0, 0);
-        GeoSegment seg4 = new GeoSegment("Seg1", point17, point18);
+        GeoSegment seg4 = new GeoSegment("Seg2", point17, point18);
 
-        GeoFeature feature3 = new GeoFeature(seg3);
-        GeoFeature feature4 = feature3.addSegment(seg4);*/
+        route1 = route1.addSegment(seg3);
+        assert route1.getLength() == seg1.getLength()+seg2.getLength()+seg3.getLength();
 
 
 
