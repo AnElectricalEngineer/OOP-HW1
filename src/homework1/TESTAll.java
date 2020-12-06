@@ -241,6 +241,10 @@ public class TESTAll
         GeoSegment seg1 = new GeoSegment("Seg1", point11, point12);
         Route route1 = new Route(seg1);
         assert route1.getLength() == seg1.getLength();
+        assert route1.getStart().equals(point11);
+        assert route1.getEnd().equals(point12);
+        assert route1.getStartHeading() == seg1.getHeading();
+        assert route1.getEndHeading() == seg1.getHeading();
 
         GeoPoint point13 = new GeoPoint(45000000, -45000000);
         GeoPoint point14 = new GeoPoint(0, 0);
@@ -249,6 +253,10 @@ public class TESTAll
         route1 = route1.addSegment(seg2);
         assert route1.getLength() == seg1.getLength() + seg2.getLength();
         assert route1.hashCode() == (int)(seg1.getLength() + seg2.getLength());
+        assert route1.getStart().equals(point11);
+        assert route1.getEnd().equals(point14);
+        assert route1.getStartHeading() == seg1.getHeading();
+        assert route1.getEndHeading() == seg2.getHeading();
 
         GeoPoint point15 = new GeoPoint(0, 0);
         GeoPoint point16 = new GeoPoint(35000000, 25000000);
@@ -260,9 +268,41 @@ public class TESTAll
 
         route1 = route1.addSegment(seg3);
         assert route1.getLength() == seg1.getLength()+seg2.getLength()+seg3.getLength();
+        assert route1.getStart().equals(point11);
+        assert route1.getEnd().equals(point16);
+        assert route1.getStartHeading() == seg1.getHeading();
+        assert route1.getEndHeading() == seg3.getHeading();
 
+        Iterator <GeoSegment> segments = route1.getGeoSegments();
+        while(segments.hasNext())
+        {
+            String temp = segments.next().toString();
+            System.out.println(temp);
+        }
 
+        Iterator<GeoFeature> features = route1.getGeoFeatures();
+        while(features.hasNext())
+        {
+            String temp = features.next().toString();
+            System.out.println(temp);
+        }
 
+        Route route2 = new Route(seg4);
+        assert !route1.equals(route2);
 
+        GeoPoint point20 = new GeoPoint(45000000, 45000000);
+        GeoPoint point21 = new GeoPoint(45000000, -45000000);
+        GeoSegment seg20 = new GeoSegment("Seg1", point20, point21);
+        Route route3 = new Route(seg20);
+        GeoPoint point23 = new GeoPoint(45000000, -45000000);
+        GeoPoint point24 = new GeoPoint(0, 0);
+        GeoSegment seg21 = new GeoSegment("Seg1", point23, point24);
+        route3 = route3.addSegment(seg21);
+        GeoPoint point25 = new GeoPoint(0, 0);
+        GeoPoint point26 = new GeoPoint(35000000, 25000000);
+        GeoSegment seg23 = new GeoSegment("Seg2", point25, point26);
+        route3 = route3.addSegment(seg23);
+
+        assert route1.equals(route3);
     }
 }
