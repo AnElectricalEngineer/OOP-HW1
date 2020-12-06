@@ -223,10 +223,7 @@ public class GeoFeature {
 
         //  Create a COPY of the list of segments comprising the GeoFeature
         List <GeoSegment> segmentsCopy = new LinkedList<>();
-        for(int i = 0; i < segments_.size(); i++)
-        {
-            segmentsCopy.add(i, segments_.get(i));
-        }
+        segmentsCopy.addAll(segments_);
         checkRep();
         return segmentsCopy.iterator();
     }

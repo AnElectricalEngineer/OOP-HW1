@@ -36,7 +36,6 @@ import java.util.List;
 public class Route {
 
 
-    // TODO Write abstraction function and representation invariant
     //	Abstraction Function:
     //	A Route is a path composed of a positive number of
     //	connected GeoFeatures. The Route begins at
@@ -81,12 +80,12 @@ public class Route {
     private Route(Route prevRoute)
     {
         features_ = new LinkedList<>();
-        Iterator<GeoFeature> features = gf.getGeoSegments();
+        Iterator<GeoFeature> features = prevRoute.getGeoFeatures();
 
-        //  Copy segments from gf.segments_ to new list
-        while(segments.hasNext())
+        //  Copy segments from prevRoute.features_ to new list
+        while(features.hasNext())
         {
-            segments_.add(segments.next());
+            features_.add(features.next());
         }
         checkRep();
     }
@@ -162,7 +161,25 @@ public class Route {
      *         r.length = this.length + gs.length
      **/
     public Route addSegment(GeoSegment gs) {
-        // TODO Implement this method
+        checkRep();
+        Route route = new Route(this);
+
+        /*  Differentiate between two cases. If the name of the segment gs is
+          the same as that of the last feature in the route, add gs to that
+          feature. Otherwise, create a new feature with gs as the first
+          segment, and append to the end of the route.
+          */
+        if(gs.getName().equals(features_.get(features_.size() - 1).getName()))
+        {
+            route.features_.get(features_.size() - 1).addSegment(gs);
+        }
+        else
+        {
+            GeoFeature newFeature = new GeoFeature(gs);
+            route.features_.add(newFeature);
+        }
+        checkRep();
+        return route;
     }
 
 
@@ -189,10 +206,7 @@ public class Route {
 
         //  Create a COPY of the list of the GeoFeatures comprising the Route
         List <GeoFeature> featuresCopy = new LinkedList<>();
-        for(int i = 0; i < features_.size(); i++)
-        {
-            featuresCopy.add(features_.get(i));
-        }
+        featuresCopy.addAll(features_);
         checkRep();
         return featuresCopy.iterator();
     }
@@ -215,10 +229,10 @@ public class Route {
     public Iterator<GeoSegment> getGeoSegments() {
         checkRep();
         List <GeoSegment> allSegments = new LinkedList<>();
-        for(int i = 0; i < features_.size(); i++)
+        for (GeoFeature feature : features_)
         {
-            Iterator <GeoSegment> segments = features_.get(i).getGeoSegments();
-            while(segments.hasNext())
+            Iterator<GeoSegment> segments = feature.getGeoSegments();
+            while (segments.hasNext())
             {
                 allSegments.add(segments.next());
             }
@@ -235,7 +249,6 @@ public class Route {
      *          the same elements in the same order).
      **/
     public boolean equals(Object o) {
-        // TODO
         checkRep();
         if((o == null) || !(o instanceof Route))
         {
@@ -273,7 +286,7 @@ public class Route {
         // This implementation will work, but you may want to modify it
         // for improved performance.
 
-        return 1;
+        return (int)getLength();
     }
 
 
@@ -282,6 +295,8 @@ public class Route {
      * @return a string representation of this.
      **/
     public String toString() {
+        checkRep();
+        return "Route: Start point: " + getStart() + ", End point: " + getEnd();
     }
 
     private void checkRep()

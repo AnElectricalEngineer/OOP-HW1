@@ -232,4 +232,8 @@ public class TESTAll
         assert feature1.equals(feature3);
         assert !feature1.equals(feature2);
     }
+
+    private static void testRoute()
+    {
+    }
 }
