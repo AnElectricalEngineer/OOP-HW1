@@ -77,15 +77,33 @@ public class Route {
      *          r.start = prevRoute.start &&
      *          r.end = prevRoute.end
      **/
-    private Route(Route prevRoute)
+    private Route(Route prevRoute, GeoSegment gs)
     {
+        //  TODO fix spec
         features_ = new LinkedList<>();
-        Iterator<GeoFeature> features = prevRoute.getGeoFeatures();
 
-        //  Copy segments from prevRoute.features_ to new list
-        while(features.hasNext())
+        //  Copy all features except last from prevRoute.features_ to
+        //  new list
+        for(int i = 0; i < prevRoute.features_.size() - 1; i++)
         {
-            features_.add(features.next());
+            features_.add(prevRoute.features_.get(i));
+        }
+
+        /*  Differentiate between two cases. If the name of the segment gs is
+          the same as that of the last feature in the route, add gs to that
+          feature. Otherwise, create a new feature with gs as the first
+          segment, and append to the end of the route.
+          */
+        if(gs.getName().equals(prevRoute.features_.get(prevRoute.features_.size() - 1).getName()))
+        {
+            GeoFeature lastFeature =
+                    prevRoute.features_.get(prevRoute.features_.size() - 1).addSegment(gs);
+            features_.add(lastFeature);
+        }
+        else
+        {
+            GeoFeature newFeature = new GeoFeature(gs);
+            features_.add(newFeature);
         }
         checkRep();
     }
@@ -161,23 +179,9 @@ public class Route {
      *         r.length = this.length + gs.length
      **/
     public Route addSegment(GeoSegment gs) {
+        //TODO fix spec
         checkRep();
-        Route route = new Route(this);
-
-        /*  Differentiate between two cases. If the name of the segment gs is
-          the same as that of the last feature in the route, add gs to that
-          feature. Otherwise, create a new feature with gs as the first
-          segment, and append to the end of the route.
-          */
-        if(gs.getName().equals(features_.get(features_.size() - 1).getName()))
-        {
-            route.features_.get(features_.size() - 1).addSegment(gs);
-        }
-        else
-        {
-            GeoFeature newFeature = new GeoFeature(gs);
-            route.features_.add(newFeature);
-        }
+        Route route = new Route(this, gs);
         checkRep();
         return route;
     }
