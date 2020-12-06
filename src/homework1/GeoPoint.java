@@ -226,6 +226,7 @@ public class GeoPoint
         checkRep();
         if ((gp == null) || !(gp instanceof GeoPoint))
         {
+            checkRep();
             return false;
         }
         GeoPoint point = (GeoPoint) gp;

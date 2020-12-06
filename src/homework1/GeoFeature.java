@@ -49,7 +49,7 @@ public class GeoFeature {
 
 
     //	Abstraction Function:
-    //	A GeoFeature is geographical feature composed of a positive number of
+    //	A GeoFeature is a geographical feature composed of a positive number of
     //	connected GeoSegments with the same name. The feature begins at
     //	GeoFeature.getFirst().getP1() (the first point of the first segment in
     //	the feature). The feature ends at GeoFeature.getLast().getP2() (the
@@ -57,8 +57,8 @@ public class GeoFeature {
 
     //	Representation Invariant:
     //	For every GeoFeature f, f.name_ != null && 0 <= f.startHeading_ < 360
-    //	&& 0 <= f.endHeading_ < 360 && for all GeoSegment s_i, s_j, i<j in a
-    //	GeoFeature f, s_i.endPoint == s_j.startPoint && for all GeoSegments s
+    //	&& 0 <= f.endHeading_ < 360 && for all GeoSegments s_i,
+    //	s_i.endPoint == s_i+1.startPoint && for all GeoSegments s
     //	in a GeoFeature f,	it must hold that s.name_ == f.name_.
 
     private final String name_;
@@ -78,6 +78,31 @@ public class GeoFeature {
         this.name_ = gs.getName();
         segments_ = new LinkedList<>();
         segments_.add(gs);
+        checkRep();
+    }
+
+
+    /**
+     * Constructs a new GeoFeature r from an existing GeoFeature gf.
+     * @requires gf != null
+     * @effects Constructs a new GeoFeature r such that
+     *	        r.name = gf.name &&
+     *          r.startHeading = gf.startHeading &&
+     *          r.endHeading = gf.endHeading &&
+     *          r.start = gf.start &&
+     *          r.end = gf.end
+     **/
+    private GeoFeature(GeoFeature gf)
+    {
+        this.name_ = gf.getName();
+        segments_ = new LinkedList<>();
+        Iterator<GeoSegment> segments = gf.getGeoSegments();
+
+        //  Copy segments from gf.segments_ to new list
+        while(segments.hasNext())
+        {
+            segments_.add(segments.next());
+        }
         checkRep();
     }
 
@@ -163,7 +188,6 @@ public class GeoFeature {
      *    	   r.length = this.length + gs.length
      **/
     public GeoFeature addSegment(GeoSegment gs) {
-        // TODO Implement this method
         checkRep();
 
         //  Create a new GeoFeature from existing GeoFeature
@@ -229,11 +253,12 @@ public class GeoFeature {
             return false;
         }
 
-        //  Check whether the i'th segment in each feature is equal.
+        //  Check whether each i'th segment in each feature is equal.
         for(int i = 0; i<feature.segments_.size(); i++)
         {
             if(!feature.segments_.get(i).equals(segments_.get(i)))
             {
+                checkRep();
                 return false;
             }
         }
@@ -293,19 +318,4 @@ public class GeoFeature {
             assert segments_.get(segments_.size() - 1).getName().equals(name_);
         }
     }
-
-    private GeoFeature(GeoFeature gf)
-    {
-        this.name_ = gf.getName();
-        segments_ = new LinkedList<>();
-        Iterator<GeoSegment> segments = gf.getGeoSegments();
-
-        //  Copy segments from gf.segments_ to new list
-        while(segments.hasNext())
-        {
-            segments_.add(segments.next());
-        }
-        checkRep();
-    }
-
 }

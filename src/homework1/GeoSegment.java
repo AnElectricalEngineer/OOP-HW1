@@ -145,6 +145,7 @@ public class GeoSegment  {
         checkRep();
         if ((gs == null) || !(gs instanceof GeoSegment))
         {
+            checkRep();
             return false;
         }
         GeoSegment segment = (GeoSegment) gs;
