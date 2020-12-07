@@ -9,7 +9,7 @@ public class TESTAll
         //testGeoPoint();
         //testGeoSegment();
         //testGeoFeature();
-        testRoute();
+        //testRoute();
     }
 
     private static void testGeoPoint()
