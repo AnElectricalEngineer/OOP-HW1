@@ -138,7 +138,8 @@ public class Route {
     /**
      * Returns direction of travel at the start of the route, in degrees.
      * @return direction (in compass heading) of travel at the start of the
-     *         route, in degrees.
+     *         route, in degrees. If the first segment of the first feature is
+     *         of length 0, the heading is defined as 0 degrees.
      **/
     public double getStartHeading() {
         checkRep();
@@ -149,7 +150,8 @@ public class Route {
     /**
      * Returns direction of travel at the end of the route, in degrees.
      * @return direction (in compass heading) of travel at the end of the
-     *         route, in degrees.
+     *         route, in degrees. If the last segment of the last feature is
+     *         of length 0, the heading is defined as 0 degrees.
      **/
     public double getEndHeading() {
         checkRep();

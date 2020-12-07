@@ -6,10 +6,10 @@ public class TESTAll
 {
     public static void main(String[] args)
     {
-        //testGeoPoint();
-        //testGeoSegment();
-        //testGeoFeature();
-        //testRoute();
+        testGeoPoint();
+        testGeoSegment();
+        testGeoFeature();
+        testRoute();
     }
 
     private static void testGeoPoint()
@@ -141,6 +141,12 @@ public class TESTAll
         assert seg9.getHeading() >= 0.0 && seg9.getHeading() <= 0.1;
         GeoSegment seg10 = new GeoSegment("Seg10", point9, point7);
         assert seg10.getHeading() >= 179.9 && seg9.getHeading() <= 181.1;
+
+        GeoPoint testPoint1 = new GeoPoint(45, 45);
+        GeoPoint testPoint2 = new GeoPoint(45, 45);
+        GeoSegment testSeg1 = new GeoSegment("testSeg", testPoint1, testPoint2);
+        double testSeg1Heading = testSeg1.getHeading();
+        assert testSeg1Heading >= 0.0 && testSeg1Heading <= 0.1;
         System.out.println("getHeading() works");
 
         GeoSegment seg1Copy = new GeoSegment("Seg1", point1, point2);
@@ -182,6 +188,18 @@ public class TESTAll
         assert feature1.getEndHeading() == seg1.getHeading();
         System.out.println("Feature 1's beginning heading is: " + feature1.getStartHeading());
         System.out.println("Feature 1's ending heading is: " + feature1.getEndHeading());
+
+        GeoPoint testPoint1 = new GeoPoint(45, 45);
+        GeoPoint testPoint2 = new GeoPoint(45, 45);
+        GeoSegment testSeg1 = new GeoSegment("testSeg", testPoint1, testPoint2);
+        GeoFeature testFeature1 = new GeoFeature(testSeg1);
+        GeoPoint testPoint3 = new GeoPoint(45, 45);
+        GeoSegment testSeg2 = new GeoSegment("testSeg", testPoint2, testPoint3);
+        testFeature1 = testFeature1.addSegment(testSeg2);
+        double testFeature1StartHeading = testFeature1.getStartHeading();
+        double testFeature1EndHeading = testFeature1.getEndHeading();
+        assert testFeature1StartHeading >= 0.0 && testFeature1StartHeading <= 0.1;
+        assert testFeature1EndHeading >= 0.0 && testFeature1EndHeading <= 0.1;
 
         assert feature1.getLength() == seg1.getLength();
         System.out.println("Feature 1's length is: " + feature1.getLength());
@@ -257,6 +275,18 @@ public class TESTAll
         assert route1.getEnd().equals(point14);
         assert route1.getStartHeading() == seg1.getHeading();
         assert route1.getEndHeading() == seg2.getHeading();
+
+        GeoPoint testPoint1 = new GeoPoint(45, 45);
+        GeoPoint testPoint2 = new GeoPoint(45, 45);
+        GeoSegment testSeg1 = new GeoSegment("testSeg", testPoint1, testPoint2);
+        GeoPoint testPoint3 = new GeoPoint(45, 45);
+        GeoSegment testSeg2 = new GeoSegment("testSeg", testPoint2, testPoint3);
+        Route testRoute1 = new Route(testSeg1);
+        testRoute1.addSegment(testSeg2);
+        double testRoute1StartHeading = testRoute1.getStartHeading();
+        double testRoute1EndHeading = testRoute1.getEndHeading();
+        assert testRoute1StartHeading >= 0.0 && testRoute1StartHeading <= 0.1;
+        assert testRoute1EndHeading >= 0.0 && testRoute1EndHeading <= 0.1;
 
         GeoPoint point15 = new GeoPoint(0, 0);
         GeoPoint point16 = new GeoPoint(35000000, 25000000);
