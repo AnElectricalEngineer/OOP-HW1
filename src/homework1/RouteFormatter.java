@@ -1,6 +1,8 @@
 package homework1;
 
 
+import java.util.Iterator;
+
 /**
  * A RouteFormatter class knows how to create a textual description of
  * directions from one location to another. The class is abstract to
@@ -24,7 +26,16 @@ public abstract class RouteFormatter {
         // feature in this route and concatenate the results into a single
         // String.
 
-        // TODO Implement this method
+        String directions = "";
+        double curHeading = heading;
+        Iterator<GeoFeature> features = route.getGeoFeatures();
+        while(features.hasNext())
+        {
+            GeoFeature feature = features.next();
+            directions += computeLine(feature, curHeading);
+            curHeading = feature.getEndHeading();
+        }
+        return directions;
     }
 
 

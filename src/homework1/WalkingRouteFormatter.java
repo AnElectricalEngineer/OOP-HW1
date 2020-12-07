@@ -66,7 +66,7 @@ public class WalkingRouteFormatter extends RouteFormatter {
         //  TODO check format
         double length = geoFeature.getLength();
         double totalTime = length*WALKING_SPEED;
-        DecimalFormat df = new DecimalFormat("###");
+        DecimalFormat df = new DecimalFormat("0");
         String turnString = getTurnString(origHeading,
                 geoFeature.getStartHeading());
         return turnString + " onto " + geoFeature.getName() + " and walk for "
