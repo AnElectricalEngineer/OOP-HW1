@@ -63,13 +63,13 @@ public class WalkingRouteFormatter extends RouteFormatter {
         // and at:
         // http://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html
 
-        // TODO Implement this method
-
-        //  TODO round or truncate totaltime when displaying
+        //  TODO check format
         double length = geoFeature.getLength();
         double totalTime = length*WALKING_SPEED;
+        DecimalFormat df = new DecimalFormat("###");
         String turnString = getTurnString(origHeading,
                 geoFeature.getStartHeading());
-        return turnString + " onto " + geoFeature.getName() + " and walk for " + totalTime + " minutes.\n";
+        return turnString + " onto " + geoFeature.getName() + " and walk for "
+                + df.format(totalTime) + " minutes.\n";
     }
 }
