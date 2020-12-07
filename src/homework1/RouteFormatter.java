@@ -27,13 +27,13 @@ public abstract class RouteFormatter {
         // String.
 
         String directions = "";
-        double curHeading = heading;
+        double currentHeading = heading;
         Iterator<GeoFeature> features = route.getGeoFeatures();
         while(features.hasNext())
         {
             GeoFeature feature = features.next();
-            directions += computeLine(feature, curHeading);
-            curHeading = feature.getEndHeading();
+            directions += computeLine(feature, currentHeading);
+            currentHeading = feature.getEndHeading();
         }
         return directions;
     }
