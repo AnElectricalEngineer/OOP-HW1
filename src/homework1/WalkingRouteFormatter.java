@@ -63,7 +63,6 @@ public class WalkingRouteFormatter extends RouteFormatter {
         // and at:
         // http://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html
 
-        //  TODO check format
         double length = geoFeature.getLength();
         double totalTime = length*WALKING_SPEED;
         DecimalFormat df = new DecimalFormat("0");
