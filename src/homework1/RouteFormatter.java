@@ -69,8 +69,8 @@ public abstract class RouteFormatter {
           normalized headings*/
         double a = normalizeHeading(newHeading - origHeading);
 
-        //  Right Turn (a >= 0 && a <
-        if(a < 10)
+        //  Right Turn (a >= 0 && a <= 180)
+        if(a >= 0 && a < 10)
         {
             return "Continue";
         }
@@ -91,20 +91,20 @@ public abstract class RouteFormatter {
             return "U-turn";
         }
 
-        //  Left turn
-        if(a > 350)
+        //  Left turn (a < 0 && a >= -180)
+        if(a < 0 && a > -10)
         {
             return "Continue";
         }
-        if(a <= 350 && a > 300)
+        if(a <= -10 && a > -60)
         {
             return "Turn slight left";
         }
-        if(a <= 300 && a > 240)
+        if(a <= -60 && a > -120)
         {
             return "Turn left";
         }
-        if(a <= 240 && a > 181)
+        if(a <= -120 && a > -179)
         {
             return "Turn sharp left";
         }
