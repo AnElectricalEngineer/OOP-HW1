@@ -39,7 +39,7 @@ public class GeoSegmentsDialog extends JDialog {
         lstSegments = new JList<>(new DefaultListModel<GeoSegment>());
         lstSegments.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrlSegments = new JScrollPane(lstSegments);
-        scrlSegments.setPreferredSize(new Dimension(450, 100));
+        scrlSegments.setPreferredSize(new Dimension(600, 200));
 
         JLabel lblSegments = new JLabel("GeoSegments:");
         lblSegments.setLabelFor(lstSegments);
@@ -69,8 +69,6 @@ public class GeoSegmentsDialog extends JDialog {
         GridBagConstraints c = new GridBagConstraints();
         this.setLayout(gridbag);
 
-        c.fill = GridBagConstraints.BOTH;
-
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 1;
@@ -81,19 +79,28 @@ public class GeoSegmentsDialog extends JDialog {
 
         c.gridx = 0;
         c.gridy = 1;
-        c.gridwidth = 1;
+        c.gridwidth = 2;
         c.gridheight = 5;
         c.insets = new Insets(0,0,0,0);
         gridbag.setConstraints(scrlSegments, c);
         this.add(scrlSegments);
 
-        c.gridx = 2;
-        c.gridy = 4;
+        c.gridx = 0;
+        c.gridy = 6;
         c.gridwidth = 1;
         c.gridheight = 1;
-        c.insets = new Insets(0,20,0,0);
-        c.anchor = GridBagConstraints.SOUTH;
+        c.insets = new Insets(20,0,0,0);
+        c.anchor = GridBagConstraints.LAST_LINE_START;
         gridbag.setConstraints(btnAdd, c);
         this.add(btnAdd);
+
+        c.gridx = 1;
+        c.gridy = 6;
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.insets = new Insets(20,0,0,0);
+        c.anchor = GridBagConstraints.LAST_LINE_END;
+        gridbag.setConstraints(btnCancel, c);
+        this.add(btnCancel);
     }
 }
