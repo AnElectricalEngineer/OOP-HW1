@@ -36,7 +36,18 @@ public class GeoSegmentsDialog extends JDialog {
 
         // TODO Write the body of this method
 
-        lstSegments = new JList<>(new DefaultListModel<GeoSegment>());
+        //  Create a new instance of ExampleGeoSegments
+        ExampleGeoSegments exampleGeoSegments = new ExampleGeoSegments();
+
+        /*  Create a new DefaultListModel because cant add elements to JList
+          after definition. Add segments to this list, and JList will act as
+          a 'display' for this DefaultListModel.*/
+        DefaultListModel<GeoSegment> listModel = new DefaultListModel<>();
+        for(int i = 0; i < exampleGeoSegments.segments.length; i++)
+        {
+            listModel.addElement(exampleGeoSegments.segments[i]);
+        }
+        lstSegments = new JList<>(listModel);
         lstSegments.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrlSegments = new JScrollPane(lstSegments);
         scrlSegments.setPreferredSize(new Dimension(600, 200));
