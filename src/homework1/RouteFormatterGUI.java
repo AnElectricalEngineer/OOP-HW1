@@ -169,7 +169,7 @@ public class RouteFormatterGUI extends JPanel {
             //  Check legality of segment addition to route
             if(route.getEnd().equals(segment.getP1()))
             {
-                route.addSegment(segment);
+                route = route.addSegment(segment);
                 model.addElement(segment);
 
                 //TODO CHECK THIS! (HEADING)
@@ -177,6 +177,11 @@ public class RouteFormatterGUI extends JPanel {
                         walkingRouteFormatter.computeDirections(route,
                                 route.getStartHeading());
                 txtWalkingDirections.setText(newWalkingDirections);
+
+                String newDrivingDirections =
+                        drivingRouteFormatter.computeDirections(route,
+                                route.getStartHeading());
+                txtDrivingDirections.setText(newDrivingDirections);
             }
         }
     }
