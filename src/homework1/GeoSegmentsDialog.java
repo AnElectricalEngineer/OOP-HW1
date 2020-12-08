@@ -54,7 +54,7 @@ public class GeoSegmentsDialog extends JDialog {
         JButton btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //dlgSegments.setVisible(true);
+                setVisible(false);
             }
         });
 
