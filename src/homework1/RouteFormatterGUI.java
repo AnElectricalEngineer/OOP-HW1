@@ -159,6 +159,15 @@ public class RouteFormatterGUI extends JPanel {
         {
             route = new Route(segment);
             model.addElement(segment);
+            String newWalkingDirections =
+                    walkingRouteFormatter.computeDirections(route,
+                            0);
+            txtWalkingDirections.setText(newWalkingDirections);
+
+            String newDrivingDirections =
+                    drivingRouteFormatter.computeDirections(route,
+                            0);
+            txtDrivingDirections.setText(newDrivingDirections);
             //TODO Check what should happen if we start with empty route
 
         }
@@ -171,7 +180,8 @@ public class RouteFormatterGUI extends JPanel {
                 route = route.addSegment(segment);
                 model.addElement(segment);
 
-                //TODO CHECK THIS! (HEADING) why does spec say heading 0??
+                //TODO CHECK THIS! (HEADING) why does spec say heading
+                // 0??Change to 0 I think!
                 String newWalkingDirections =
                         walkingRouteFormatter.computeDirections(route,
                                 route.getStartHeading());
