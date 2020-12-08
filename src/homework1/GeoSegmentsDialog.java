@@ -58,10 +58,8 @@ public class GeoSegmentsDialog extends JDialog {
         JButton btnAdd = new JButton("Add");
         btnAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(e.equals(btnAdd))
-                {
-                    int index = lstSegments.getSelectedIndex();
-                }
+                int index = lstSegments.getSelectedIndex();
+                parent.addSegment(lstSegments.getSelectedValue());
             }
         });
 
