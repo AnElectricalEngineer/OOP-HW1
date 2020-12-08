@@ -145,7 +145,6 @@ public class RouteFormatterGUI extends JPanel {
         DefaultListModel<GeoSegment> model =
                 (DefaultListModel<GeoSegment>)(this.lstSegments.getModel());
 
-        // TODO Write the body of this method
         WalkingRouteFormatter walkingRouteFormatter =
                 new WalkingRouteFormatter();
         DrivingRouteFormatter drivingRouteFormatter =
@@ -172,7 +171,7 @@ public class RouteFormatterGUI extends JPanel {
                 route = route.addSegment(segment);
                 model.addElement(segment);
 
-                //TODO CHECK THIS! (HEADING)
+                //TODO CHECK THIS! (HEADING) why does spec say heading 0??
                 String newWalkingDirections =
                         walkingRouteFormatter.computeDirections(route,
                                 route.getStartHeading());

@@ -284,7 +284,7 @@ public class GeoFeature {
      **/
     public String toString() {
         checkRep();
-        return "GeoFeature - Name: " + name_;
+        return "(\"" + name_ + "\", " + getStart() + ", " + getEnd() + ")";
     }
 
     /**

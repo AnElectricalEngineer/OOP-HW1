@@ -255,7 +255,7 @@ public class GeoPoint
     public String toString()
     {
         checkRep();
-        return "Point - latitude: " + latitude_ + ", longitude: " + longitude_;
+        return "(" + latitude_ + ", " + longitude_ + ")";
     }
 
     /**

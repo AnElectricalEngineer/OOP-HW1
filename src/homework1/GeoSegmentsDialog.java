@@ -34,8 +34,6 @@ public class GeoSegmentsDialog extends JDialog {
 
         this.parent = pnlParent;
 
-        // TODO Write the body of this method
-
         //  Create a new instance of ExampleGeoSegments
         ExampleGeoSegments exampleGeoSegments = new ExampleGeoSegments();
 

@@ -176,8 +176,7 @@ public class GeoSegment  {
      **/
     public String toString() {
         checkRep();
-        return "Name: " + name_ + ", Start Point: " + startPoint_ + ", End " +
-                "Point: " + endPoint_;
+        return "(\"" + name_ + "\", " + getP1() + ", " + getP2() + ")";
     }
 
     /**
