@@ -170,6 +170,7 @@ public class RouteFormatterGUI extends JPanel {
             if(route.getEnd().equals(segment.getP1()))
             {
                 route.addSegment(segment);
+                model.addElement(segment);
 
                 //TODO CHECK THIS! (HEADING)
                 String newWalkingDirections =
