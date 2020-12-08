@@ -146,6 +146,38 @@ public class RouteFormatterGUI extends JPanel {
                 (DefaultListModel<GeoSegment>)(this.lstSegments.getModel());
 
         // TODO Write the body of this method
+        WalkingRouteFormatter walkingRouteFormatter =
+                new WalkingRouteFormatter();
+        DrivingRouteFormatter drivingRouteFormatter =
+                new DrivingRouteFormatter();
+
+        /*Differentiate between two cases: 1) route is empty, and 2) route is
+         not empty. In case 1, any segment can be added to the route. In case
+         2, legality of addition must be checked.*/
+
+        //  Case 1
+        if(route == null)
+        {
+            route = new Route(segment);
+            model.addElement(segment);
+            //TODO Check what should happen if we start with empty route
+
+        }
+        //  Case 2
+        else
+        {
+            //  Check legality of segment addition to route
+            if(route.getEnd().equals(segment.getP1()))
+            {
+                route.addSegment(segment);
+
+                //TODO CHECK THIS! (HEADING)
+                String newWalkingDirections =
+                        walkingRouteFormatter.computeDirections(route,
+                                route.getStartHeading());
+                txtWalkingDirections.setText(newWalkingDirections);
+            }
+        }
     }
 
 
