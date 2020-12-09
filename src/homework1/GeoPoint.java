@@ -285,8 +285,6 @@ public class GeoPoint
      */
     private double atan2ToDegrees(double theta)
     {
-        assert theta >= -Math.PI && theta <= Math.PI; //TODO maybe add
-        // epsilon because comparing doubles
         final double degreesInPi = 180.0;
         final double degreesIn2Pi = 360.0;
         return (theta * (degreesInPi / Math.PI) + degreesIn2Pi) % degreesIn2Pi;
