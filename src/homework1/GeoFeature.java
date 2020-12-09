@@ -1,6 +1,8 @@
 package homework1;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A GeoFeature represents a route from one location to another along a
@@ -36,20 +38,33 @@ import java.util.Iterator;
  * </pre>
  **/
 public class GeoFeature {
-	
-	// Implementation hint:
-	// When asked to return an Iterator, consider using the iterator() method
-	// in the List interface. Two nice classes that implement the List
-	// interface are ArrayList and LinkedList. If comparing two Lists for
-	// equality is needed, consider using the equals() method of List. More
-	// info can be found at:
-	//   http://docs.oracle.com/javase/8/docs/api/java/util/List.html
-	
-	
-  	// TODO Write abstraction function and representation invariant
 
-	
-	/**
+    // Implementation hint:
+    // When asked to return an Iterator, consider using the iterator() method
+    // in the List interface. Two nice classes that implement the List
+    // interface are ArrayList and LinkedList. If comparing two Lists for
+    // equality is needed, consider using the equals() method of List. More
+    // info can be found at:
+    //   http://docs.oracle.com/javase/8/docs/api/java/util/List.html
+
+
+    //	Abstraction Function:
+    //	A GeoFeature is a geographical feature composed of a positive number of
+    //	connected GeoSegments with the same name. The feature begins at
+    //	GeoFeature.getFirst().getP1() (the first point of the first segment in
+    //	the feature). The feature ends at GeoFeature.getLast().getP2() (the
+    //  second point of the last segment in the feature).
+
+    //	Representation Invariant:
+    //	For every GeoFeature f, f.name_ != null && 0 <= f.startHeading_ < 360
+    //	&& 0 <= f.endHeading_ < 360 && for all GeoSegments s_i,
+    //	s_i.endPoint == s_i+1.startPoint && for all GeoSegments s
+    //	in a GeoFeature f,	it must hold that s.name_ == f.name_.
+
+    private final String name_;
+    private final List<GeoSegment> segments_;   // List containing GeoSegments
+
+    /**
      * Constructs a new GeoFeature.
      * @requires gs != null
      * @effects Constructs a new GeoFeature, r, such that
@@ -59,85 +74,135 @@ public class GeoFeature {
      *          r.start = gs.p1 &&
      *          r.end = gs.p2
      **/
-  	public GeoFeature(GeoSegment gs) {
-  		// TODO Implement this constructor
-  	}
-  
-
- 	/**
- 	  * Returns name of geographic feature.
-      * @return name of geographic feature
-      */
-  	public String getName() {
-  		// TODO Implement this method
-  	}
+    public GeoFeature(GeoSegment gs) {
+        this.name_ = gs.getName();
+        segments_ = new LinkedList<>();
+        segments_.add(gs);
+        checkRep();
+    }
 
 
-  	/**
-  	 * Returns location of the start of the geographic feature.
+    /**
+     * Constructs a new GeoFeature r from an existing GeoFeature gf.
+     * @requires gf != null
+     * @effects Constructs a new GeoFeature r such that
+     *	        r.name = gf.name &&
+     *          r.startHeading = gf.startHeading &&
+     *          r.endHeading = gf.endHeading &&
+     *          r.start = gf.start &&
+     *          r.end = gf.end
+     **/
+    private GeoFeature(GeoFeature gf)
+    {
+        this.name_ = gf.getName();
+        segments_ = new LinkedList<>();
+        Iterator<GeoSegment> segments = gf.getGeoSegments();
+
+        //  Copy segments from gf.segments_ to new list
+        while(segments.hasNext())
+        {
+            segments_.add(segments.next());
+        }
+        checkRep();
+    }
+
+
+    /**
+     * Returns name of geographic feature.
+     * @return name of geographic feature
+     */
+    public String getName() {
+        checkRep();
+        return name_;
+    }
+
+
+    /**
+     * Returns location of the start of the geographic feature.
      * @return location of the start of the geographic feature.
      */
-  	public GeoPoint getStart() {
-  		// TODO Implement this method
-  	}
+    public GeoPoint getStart() {
+        checkRep();
+        return segments_.get(0).getP1();
+    }
 
 
-  	/**
-  	 * Returns location of the end of the geographic feature.
+    /**
+     * Returns location of the end of the geographic feature.
      * @return location of the end of the geographic feature.
      */
-  	public GeoPoint getEnd() {
-  		// TODO Implement this method
-  	}
+    public GeoPoint getEnd() {
+        checkRep();
+        return segments_.get(segments_.size() - 1).getP2();
+    }
 
 
-  	/**
-  	 * Returns direction of travel at the start of the geographic feature.
+    /**
+     * Returns direction of travel at the start of the geographic feature.
      * @return direction (in standard heading) of travel at the start of the
-     *         geographic feature, in degrees.
+     *         geographic feature, in degrees. If the first segment is of
+     *         length 0, the heading is defined as 0 degrees.
      */
-  	public double getStartHeading() {
-  		// TODO Implement this method
-  	}
+    public double getStartHeading() {
+        checkRep();
+        return segments_.get(0).getHeading();
+    }
 
 
-  	/**
-  	 * Returns direction of travel at the end of the geographic feature.
+    /**
+     * Returns direction of travel at the end of the geographic feature.
      * @return direction (in standard heading) of travel at the end of the
-     *         geographic feature, in degrees.
+     *         geographic feature, in degrees. If the last segment is of
+     *      *         length 0, the heading is defined as 0 degrees.
      */
-  	public double getEndHeading() {
-  		// TODO Implement this method
-  	}
+    public double getEndHeading() {
+        checkRep();
+        return segments_.get(segments_.size() - 1).getHeading();
+    }
 
 
-  	/**
-  	 * Returns total length of the geographic feature, in kilometers.
+    /**
+     * Returns total length of the geographic feature, in kilometers.
      * @return total length of the geographic feature, in kilometers.
      *         NOTE: this is NOT as-the-crow-flies, but rather the total
      *         distance required to traverse the geographic feature. These
      *         values are not necessarily equal.
      */
-  	public double getLength() {
-  		// TODO Implement this method
-  	}
+    public double getLength() {
+        checkRep();
+        double length = 0;
+        for(GeoSegment segment : segments_)
+        {
+            length += segment.getLength();
+        }
+        checkRep();
+        return length;
+    }
 
 
-  	/**
-   	 * Creates a new GeoFeature that is equal to this GeoFeature with gs
-   	 * appended to its end.
+    /**
+     * Creates a new GeoFeature that is equal to this GeoFeature with gs
+     * appended to its end.
      * @requires gs != null && gs.p1 = this.end && gs.name = this.name.
      * @return a new GeoFeature r such that
      *         r.end = gs.p2 &&
      *         r.endHeading = gs.heading &&
      *    	   r.length = this.length + gs.length
      **/
-  	public GeoFeature addSegment(GeoSegment gs) {
-  		// TODO Implement this method
-  	}
+    public GeoFeature addSegment(GeoSegment gs) {
+        checkRep();
+
+        //  Create a new GeoFeature from existing GeoFeature
+        GeoFeature feature = new GeoFeature(this);
+
+        //  Add the new GeoSegment
+        feature.segments_.add(gs);
+        checkRep();
+        return feature;
+    }
 
 
-  	/**
+    /**
      * Returns an Iterator of GeoSegment objects. The concatenation of the
      * GeoSegments, in order, is equivalent to this GeoFeature. All the
      * GeoSegments have the same name.
@@ -155,39 +220,101 @@ public class GeoFeature {
      * where <code>a[n]</code> denotes the nth element of the Iterator.
      * @see homework1.GeoSegment
      */
-  	public Iterator<GeoSegment> getGeoSegments() {
-  		// TODO Implement this method
-  	}
+    public Iterator<GeoSegment> getGeoSegments() {
+        checkRep();
+
+        //  Create a COPY of the list of segments comprising the GeoFeature
+        List <GeoSegment> segmentsCopy = new LinkedList<>();
+        segmentsCopy.addAll(segments_);
+        checkRep();
+        return segmentsCopy.iterator();
+    }
 
 
-  	/**
+    /**
      * Compares the argument with this GeoFeature for equality.
      * @return o != null && (o instanceof GeoFeature) &&
      *         (o.geoSegments and this.geoSegments contain
      *          the same elements in the same order).
      **/
-  	public boolean equals(Object o) {
-  		// TODO Implement this method
-  	}
+    public boolean equals(Object o) {
+        checkRep();
+        if ((o == null) || !(o instanceof GeoFeature))
+        {
+            return false;
+        }
+        GeoFeature feature = (GeoFeature) o;
+
+        /*  If number of segments in each feature is different, features
+          cannot be equal.*/
+        if(feature.segments_.size() != segments_.size())
+        {
+            return false;
+        }
+
+        //  Check whether each i'th segment in each feature is equal.
+        for(int i = 0; i<feature.segments_.size(); i++)
+        {
+            if(!feature.segments_.get(i).equals(segments_.get(i)))
+            {
+                checkRep();
+                return false;
+            }
+        }
+        checkRep();
+        return true;
+    }
 
 
-  	/**
+    /**
      * Returns a hash code for this.
      * @return a hash code for this.
      **/
-  	public int hashCode() {
-    	// This implementation will work, but you may want to modify it
-    	// improved performance.
-    	
-    	return 1;
-  	}
+    public int hashCode() {
+        // This implementation will work, but you may want to modify it
+        // improved performance.
+        checkRep();
+        return (int)getLength();
+    }
 
 
-  	/**
-  	 * Returns a string representation of this.
-   	 * @return a string representation of this.
+    /**
+     * Returns a string representation of this.
+     * @return a string representation of this.
      **/
-  	public String toString() {
-  		// TODO Implement this method
-  	}
+    public String toString() {
+        checkRep();
+        return "(\"" + name_ + "\", " + getStart() + ", " + getEnd() + ")";
+    }
+
+    /**
+     * Checks that the representation invariant is maintained.
+     */
+    private void checkRep()
+    {
+        assert name_ != null;
+        assert segments_.get(0).getHeading() >= 0 &&
+                segments_.get(0).getHeading() < 360;
+        assert segments_.get(segments_.size() - 1).getHeading() >= 0 &&
+                segments_.get(segments_.size() - 1).getHeading() < 360;
+
+        //  If size of list is 1, no need to check that linking points match.
+        if(segments_.size() == 1)
+        {
+            assert segments_.get(0).getName().equals(name_);
+        }
+
+        /*  In the general case, check that each segment's name matches the
+          feature name, and that the endpoints of each connected segment match*/
+        else
+        {
+            for( int i = 0; i < segments_.size() - 1; i++)
+            {
+                assert segments_.get(i).getName().equals(name_);
+                assert segments_.get(i).getP2().
+                        equals(segments_.get(i + 1).getP1());
+            }
+            assert segments_.get(segments_.size() - 1).getName().equals(name_);
+        }
+    }
 }

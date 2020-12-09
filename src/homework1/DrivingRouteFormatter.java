@@ -24,8 +24,8 @@ import java.text.DecimalFormat;
  * should include no extra spaces other than those shown above.
  */
 public class DrivingRouteFormatter extends RouteFormatter {
-  
-  	/**
+
+    /**
      * Computes a single line of a multi-line directions String that
      * represents the instructions for traversing a single geographic
      * feature.
@@ -49,16 +49,21 @@ public class DrivingRouteFormatter extends RouteFormatter {
      * newline and should include no extra spaces other than those shown
      * above.
      **/
-  	public String computeLine(GeoFeature geoFeature, double origHeading) {
-  		
-  		// Implementation hint:
-		// You may find the class java.text.DecimalFormat useful when
-		// implementing this method. More info can be found at:
-  	    // http://docs.oracle.com/javase/tutorial/java/data/numberformat.html
-  		// and at:
-  		// http://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html
-		   		
-  		// TODO Implement this method
-  	}
+    public String computeLine(GeoFeature geoFeature, double origHeading) {
+
+        // Implementation hint:
+        // You may find the class java.text.DecimalFormat useful when
+        // implementing this method. More info can be found at:
+        // http://docs.oracle.com/javase/tutorial/java/data/numberformat.html
+        // and at:
+        // http://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html
+
+        double length = geoFeature.getLength();
+        DecimalFormat df = new DecimalFormat("0.0");
+        String turnString = getTurnString(origHeading,
+                geoFeature.getStartHeading());
+        return turnString + " onto " + geoFeature.getName() + " and go "
+                + df.format(length) + " kilometers.\n";
+    }
 
 }
